@@ -49,6 +49,7 @@ for i = 1:n_its
 end
 
 best_n_inliers / n_pts
+
 F = best_F;
 
 end

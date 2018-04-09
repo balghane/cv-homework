@@ -7,4 +7,4 @@ y1 = reshape(repmat(1:width, [length 1]), [length*width 1]);
 
 [ x2, y2 ] = epipolarCorrespondence( im1, im2, F, x1, y1 );
 [ P, err ] = triangulate( C1, [x1 y1], C2, [x2 y2] );
-scatter3(P(:, 1), P(:, 2), P(:, 3));
+pcshow(P);
