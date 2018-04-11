@@ -20,11 +20,11 @@ pts2_padded = [pts2 ones(n_pts, 1)];
 best_F = zeros(3, 3);
 best_n_inliers = 0;
 best_inliers = zeros(n_pts, 1);
-n_its = 20000;
+n_its = 10000;
 epsilon = 0.005;
 
 for i = 1:n_its
-    inds = randperm(n_pts,100);
+    inds = randperm(n_pts,15);
     cur_pts1 = pts1(inds, :);
     cur_pts2 = pts2(inds, :);
     F = eightpoint( cur_pts1, cur_pts2, M );
@@ -54,9 +54,9 @@ for i = 1:n_its
     
 end
 
-best_n_inliers / n_pts
+best_n_inliers / n_pts;
 inliers = best_inliers;
-F = best_F
+F = best_F;
 
 end
 
