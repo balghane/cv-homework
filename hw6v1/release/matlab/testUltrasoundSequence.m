@@ -2,7 +2,7 @@ load('../data/usseq.mat')
 
 [~, ~, nf] = size(frames);
 
-rect = [60 117 146 152]';
+rect = [255 105 310 170]';
 rects = zeros(nf, 4);
 rects(1, :) = rect';
 scale_size = 2;
@@ -16,7 +16,7 @@ for i=1:every_x:nf-1
     rect = round(rect);
     rects(i+every_x, :) = rect';
     i
-    if mod(i, 100) == 1
+    if mod(i, 5) == 1
         % rect
         % imshow(imresize(f2(rect(2):rect(4), rect(1):rect(3)), scale_size, 'nearest'));
         imshow(imresize(rescale(f2), scale_size, 'nearest'));
