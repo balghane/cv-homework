@@ -12,7 +12,10 @@ Rin = imref2d(size(It));
 % rect = floor(rect);
 
 % compute image gradient
-[I_x,I_y] = imgradientxy(It);
+template = It(rect(2):rect(4), rect(1):rect(3));
+[I_x,I_y] = imgradientxy(template);
+I_x = I_x(:);
+I_y = I_y(:);
 
 % evaluate jacobian
 jacobian = eye(2);
@@ -25,6 +28,9 @@ for i = rect(2):rect(4)
         H = H + temp' * temp;
     end
 end
+
+H = 
+
 H_inv = inv(H);
 
 epsilon = 0.005;
