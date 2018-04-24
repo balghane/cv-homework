@@ -9,4 +9,3 @@ ret_vars = [vars(1) + dvars(1) + vars(1)*dvars(1) + vars(3)*dvars(2) ...
             ];
 
 end
-

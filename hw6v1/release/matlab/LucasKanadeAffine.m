@@ -20,15 +20,14 @@ r_coords = r_coords(:);
 c_coords = c_coords(:);
 
 % compute steepest descent
-s_d = [I_x_temp           I_y_temp           ...
-       I_x_temp.*r_coords I_y_temp.*r_coords ...
-       I_x_temp.*c_coords I_y_temp.*c_coords];
+s_d = [I_x_temp.*r_coords I_x_temp.*c_coords I_x_temp ...
+       I_y_temp.*r_coords I_y_temp.*c_coords I_y_temp];
 
 % evaluate Hessian
 H = s_d' * s_d;
 H_inv = inv(H);
     
-epsilon = .005;
+epsilon = .05;
 vars = zeros(6, 1);
 % vars(3:2+bnf) = ones(bnf, 1);
 delta_vars = ones(6, 1);
@@ -52,7 +51,7 @@ while(norm(delta_vars) > epsilon)
     vars = compose(vars, delta_vars_inv);
     warp_33 = [1+vars(1) vars(2) vars(3) ; vars(4) 1+vars(5) vars(6) ; 0 0 1]';
     warp_form = affine2d(warp_33);
-    norm(delta_vars)
+    % norm(delta_vars)
     % disp('Press a key !')  % Press a key here.You can see the message 'Paused: Press any key' in        % the lower left corner of MATLAB window.
     % pause;
 end
@@ -66,6 +65,6 @@ M = warp_33';
 % figure, imshow(imresize(It1_warp(rect(2):rect(4), rect(1):rect(3)), scale_size, 'nearest'));
 % figure, imshow(err_im)
 
-figure, imshow(rescale(It))
+% figure, imshow(rescale(It))
 % figure, imshow(It1)
-figure, imshow(rescale(It1_warp))
+% figure, imshow(rescale(It1_warp))

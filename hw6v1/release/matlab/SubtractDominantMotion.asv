@@ -5,17 +5,11 @@ function mask = SubtractDominantMotion(image1, image2)
 
 Rin = imref2d(size(image1));
 M = LucasKanadeAffine(image1, image2);
-M
 warp_form = affine2d(M');
 image2_warped = imwarp(image2, warp_form, 'Linear', 'OutputView', Rin);
 
-im_diff1 = rescale(abs(image2_warped - image1));
-threshold = 0.2;
-im_diff2 = im_diff1 > threshold;
-P=20;
-im_diff3 = bwareaopen(im_diff2,P);
+threshold = 0.1;
+im_diff = abs(image2_warped - image1)) > 0.1;
 
 imshow(rescale(image1))
-figure, imshow(im_diff3)
-
-mask = im_diff3;
+figure, imshow(rescale( > 0.)
