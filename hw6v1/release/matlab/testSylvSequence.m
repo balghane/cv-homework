@@ -29,7 +29,7 @@ for i=1:every_x:nf-1
     rect_b = round(rect_b);
     rects_b(i+every_x, :) = rect_b';
     i
-    if mod(i, 20) == 1
+    if mod(i, 50) == 1
         % rect
         % imshow(imresize(f2(rect(2):rect(4), rect(1):rect(3)), scale_size, 'nearest'));
         imshow(imresize(rescale(f2), scale_size, 'nearest'));

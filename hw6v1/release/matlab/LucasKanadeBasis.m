@@ -55,7 +55,7 @@ while(norm(delta_vars(1:2)) > epsilon)
     
     delta_vars = - (H \ temp_var);
     vars(1:2) = vars(1:2) - delta_vars(1:2);
-    vars(3:2+bnf) = vars(3:2+bnf) - 0.5 * delta_vars(3:2+bnf);
+    vars(3:2+bnf) = vars(3:2+bnf) - delta_vars(3:2+bnf);
     lambdas = vars(3:2+bnf);
     warp_33 = [1 0 vars(1) ; 0 1 vars(2) ; 0 0 1]';
     warp_form = affine2d(warp_33);
