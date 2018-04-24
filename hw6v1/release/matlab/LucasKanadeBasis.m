@@ -26,8 +26,9 @@ template_vec = template(:);
 I_x_temp = I_x_temp(:);
 I_y_temp = I_y_temp(:);
 
-epsilon = .05;
+epsilon = .005;
 vars = zeros(2+bnf, 1);
+% vars(3:2+bnf) = ones(bnf, 1);
 delta_vars = ones(2+bnf, 1);
 lambdas = vars(3:2+bnf);
 warp_33 = [1 0 vars(1) ; 0 1 vars(2) ; 0 0 1]';
@@ -54,7 +55,7 @@ while(norm(delta_vars(1:2)) > epsilon)
     
     delta_vars = - (H \ temp_var);
     vars(1:2) = vars(1:2) - delta_vars(1:2);
-    vars(3:2+bnf) = vars(3:2+bnf) - delta_vars(3:2+bnf);
+    vars(3:2+bnf) = vars(3:2+bnf) - 0.5 * delta_vars(3:2+bnf);
     lambdas = vars(3:2+bnf);
     warp_33 = [1 0 vars(1) ; 0 1 vars(2) ; 0 0 1]';
     warp_form = affine2d(warp_33);
@@ -64,8 +65,7 @@ end
 
 u = vars(1);
 v = vars(2);
-
-[u v]
+lambdas
 
 % scale_size = 4;
 
