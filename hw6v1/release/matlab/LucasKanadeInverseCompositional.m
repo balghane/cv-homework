@@ -11,20 +11,20 @@ Rin = imref2d(size(It));
 %It_init = imwarp(It, initial_shift_tform, 'OutputView', Rin);
 % rect = floor(rect);
 
+% make template
+template = It( rect(2):rect(4), rect(1):rect(3));
+
 % compute image gradient
-[I_x,I_y] = imgradientxy(It);
+[I_x_temp,I_y_temp] = imgradientxy(template);
 
-% evaluate jacobian
-jacobian = eye(2);
+% vectorized shit
+I_x_temp = I_x_temp(:);
+I_y_temp = I_y_temp(:);
 
-% compute Hessian
-H = 0;
-for i = rect(2):rect(4)
-    for j = rect(1):rect(3)
-        temp = [I_x(i, j)  I_y(i, j)] * jacobian;
-        H = H + temp' * temp;
-    end
-end
+% evaluate Hessian
+grad_temp = [I_x_temp I_y_temp];
+H = grad_temp' * grad_temp;
+
 H_inv = inv(H);
 
 epsilon = 0.005;
@@ -33,15 +33,12 @@ delta_warp = ones(2, 1);
 It1_warp = It1;
 
 while(norm(delta_warp) > epsilon)
-    err_im = It - It1_warp;
-    temp = zeros(2, 1);
-    for i = rect(2):rect(4)
-        for j = rect(1):rect(3)
-            temp = temp + (double(err_im(i, j)) * [I_x(i, j)  I_y(i, j)] * jacobian)';
-        end
-    end
+    err_im_temp = template - It1_warp( rect(2):rect(4), rect(1):rect(3));
+    err_im_temp = err_im_temp(:);
     
-    delta_warp = H_inv * temp;
+    temp_var = [err_im_temp'*I_x_temp ; err_im_temp'*I_y_temp];
+    
+    delta_warp = H_inv * temp_var;
     new_warp = new_warp - delta_warp;
     new_warp_33 = [1 0 new_warp(1) ; 0 1 new_warp(2) ; 0 0 1]';
     warp_form = affine2d(new_warp_33);
