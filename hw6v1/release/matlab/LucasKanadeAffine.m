@@ -20,40 +20,60 @@ r_coords = r_coords(:);
 c_coords = c_coords(:);
 
 % compute steepest descent
-s_d = [I_x_temp.*r_coords I_x_temp.*c_coords I_x_temp ...
-       I_y_temp.*r_coords I_y_temp.*c_coords I_y_temp];
+s_d = [I_x_temp.*r_coords I_y_temp.*r_coords ...
+       I_x_temp.*c_coords I_y_temp.*c_coords ...
+       I_x_temp I_y_temp];
 
 % evaluate Hessian
 H = s_d' * s_d;
 H_inv = inv(H);
     
-epsilon = .05;
+epsilon = .005;
 vars = zeros(6, 1);
 % vars(3:2+bnf) = ones(bnf, 1);
 delta_vars = ones(6, 1);
-warp_33 = [1+vars(1) vars(2) vars(3) ; vars(4) 1+vars(5) vars(6) ; 0 0 1]';
+warp_33 = [1+vars(1) vars(3) vars(5) ; vars(2) 1+vars(4) vars(6) ; 0 0 1]';
 warp_form = affine2d(warp_33);
 Rin = imref2d(size(It));
+It1_warp = imwarp(It1, warp_form, 'Linear', 'OutputView', Rin);
+It1_warp_vec = It1_warp(:);
 
 while(norm(delta_vars) > epsilon)
-    It1_warp = imwarp(It1, warp_form, 'Linear', 'OutputView', Rin);
-    It1_warp_vec = It1_warp(:);
     % mean2(rescale(abs(It1_warp - It1)))
     % imshow(rescale(It1_warp) - It1)
     
     % compute error image
-    err_im = It1_warp_vec - template_vec;
+    err_im = template_vec - It1_warp_vec;
     % err_im_temp = template - It1_warp( rect(2):rect(4), rect(1):rect(3));
     % err_im_temp = err_im_temp(:);
     
     temp_var = s_d' * err_im;
     
-    delta_vars = - (H_inv * temp_var);
+    delta_vars = - (H \ temp_var);
     delta_vars_inv = invert_warp_vars(delta_vars);
-    vars = compose(vars, delta_vars_inv);
-    warp_33 = [1+vars(1) vars(2) vars(3) ; vars(4) 1+vars(5) vars(6) ; 0 0 1]';
+    delta_inv_33 = make_33_from_vars(delta_vars_inv);
+    
+    % alt_warp_33_1 = make_33_from_vars(vars);
+    % alt_warp_33_2 = make_33_from_vars(delta_vars_inv);
+    % alt_warp_composed = alt_warp_33_1 * alt_warp_33_2;
+    % alt_warp_form = affine2d(alt_warp_composed);
+    
+    % vars = compose(vars, delta_vars_inv);
+    prev_warp_33 = warp_33;
+    warp_33 = prev_warp_33 * delta_inv_33;
     warp_form = affine2d(warp_33);
-    % norm(delta_vars)
+    
+    It1_warp = imwarp(It1, invert(warp_form), 'Linear', 'OutputView', Rin);
+    It1_warp_vec = It1_warp(:);
+    
+    norm(delta_vars)
+    
+    % It1_warp_alt = imwarp(It1, alt_warp_form_1, 'Linear', 'OutputView', Rin);
+    % It1_warp_alt = imwarp(It1_warp_alt, invert(alt_warp_form_2), 'Linear', 'OutputView', Rin);
+    
+    % sum(It1_warp_alt(:) - It1_warp(:))
+    % It1_warp_vec = It1_warp_alt(:);
+    
     % disp('Press a key !')  % Press a key here.You can see the message 'Paused: Press any key' in        % the lower left corner of MATLAB window.
     % pause;
 end

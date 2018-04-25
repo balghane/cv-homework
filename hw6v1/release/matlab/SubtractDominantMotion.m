@@ -12,11 +12,15 @@ image2_warped = imwarp(image2, warp_form, 'Linear', 'OutputView', Rin);
 im_diff1 = rescale(abs(image2_warped - image1));
 threshold = 0.2;
 im_diff2 = im_diff1 > threshold;
-P=20;
-im_diff3 = bwareaopen(im_diff2,P);
+SE = strel('diamond',r);
+im_diff3 = imerode(im_diff2,SE);
+% P=20;
+% im_diff3 = bwareaopen(im_diff2,P);
 
-% imshow(rescale(image1))
+imshow(rescale(image1))
 % figure, imshow(rescale(image2_warped))
-% figure, imshow(im_diff3)
+figure, imshow(im_diff1)
+figure, imshow(im_diff2)
+figure, imshow(im_diff3)
 
 mask = im_diff3;

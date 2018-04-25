@@ -6,6 +6,7 @@ scale_size = 2;
 every_x = 1;
 
 for i=1:every_x:nf-1
+% for i=10:11
     f1 = double(frames(:, :, i));
     f2 = double(frames(:, :, i+every_x));
     
@@ -13,7 +14,9 @@ for i=1:every_x:nf-1
     
     i
     if mod(i, 1) == 0
-        imshow(mask);
+        % imshow(rescale(f1));
+        % figure, imshow(rescale(f2));
+        % imshow(mask);
         waitforbuttonpress
         % rect
         % imshow(imresize(f2(rect(2):rect(4), rect(1):rect(3)), scale_size, 'nearest'));

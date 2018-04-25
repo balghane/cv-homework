@@ -36,7 +36,7 @@ warp_form = affine2d(warp_33);
 Rin = imref2d(size(It));
 
 while(norm(delta_vars(1:2)) > epsilon)
-    It1_warp = imwarp(It1, warp_form, 'Linear', 'OutputView', Rin);
+    It1_warp = imwarp(It1, invert(warp_form), 'Linear', 'OutputView', Rin);
     It1_warp_wind = It1_warp(rect(2):rect(4), rect(1):rect(3));
     It1_warp_vec = It1_warp_wind(:);
     
@@ -55,7 +55,7 @@ while(norm(delta_vars(1:2)) > epsilon)
     
     delta_vars = - (H \ temp_var);
     vars(1:2) = vars(1:2) - delta_vars(1:2);
-    vars(3:2+bnf) = vars(3:2+bnf) - delta_vars(3:2+bnf);
+    vars(3:2+bnf) = vars(3:2+bnf) + delta_vars(3:2+bnf);
     lambdas = vars(3:2+bnf);
     warp_33 = [1 0 vars(1) ; 0 1 vars(2) ; 0 0 1]';
     warp_form = affine2d(warp_33);
