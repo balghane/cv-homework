@@ -15,7 +15,8 @@ im_diff2 = im_diff1 > threshold;
 P=20;
 im_diff3 = bwareaopen(im_diff2,P);
 
-imshow(rescale(image1))
-figure, imshow(im_diff3)
+% imshow(rescale(image1))
+% figure, imshow(rescale(image2_warped))
+% figure, imshow(im_diff3)
 
 mask = im_diff3;

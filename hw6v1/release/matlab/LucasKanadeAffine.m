@@ -38,9 +38,11 @@ Rin = imref2d(size(It));
 while(norm(delta_vars) > epsilon)
     It1_warp = imwarp(It1, warp_form, 'Linear', 'OutputView', Rin);
     It1_warp_vec = It1_warp(:);
+    % mean2(rescale(abs(It1_warp - It1)))
+    % imshow(rescale(It1_warp) - It1)
     
     % compute error image
-    err_im = template_vec - It1_warp_vec;
+    err_im = It1_warp_vec - template_vec;
     % err_im_temp = template - It1_warp( rect(2):rect(4), rect(1):rect(3));
     % err_im_temp = err_im_temp(:);
     
