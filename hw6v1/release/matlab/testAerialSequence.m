@@ -13,10 +13,10 @@ for i=1:every_x:nf-1
     mask = SubtractDominantMotion(f1, f2);
     
     i
-    if mod(i, 1) == 0
+    if mod(i, 30) == 1
         % imshow(rescale(f1));
         % figure, imshow(rescale(f2));
-        % imshow(mask);
+        imshow(imfuse(f2, mask));
         waitforbuttonpress
         % rect
         % imshow(imresize(f2(rect(2):rect(4), rect(1):rect(3)), scale_size, 'nearest'));

@@ -66,7 +66,7 @@ while(norm(delta_vars) > epsilon)
     It1_warp = imwarp(It1, invert(warp_form), 'Linear', 'OutputView', Rin);
     It1_warp_vec = It1_warp(:);
     
-    norm(delta_vars)
+    % norm(delta_vars)
     
     % It1_warp_alt = imwarp(It1, alt_warp_form_1, 'Linear', 'OutputView', Rin);
     % It1_warp_alt = imwarp(It1_warp_alt, invert(alt_warp_form_2), 'Linear', 'OutputView', Rin);
